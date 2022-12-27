@@ -12,6 +12,37 @@ import (
 Positif Case
 */
 func TestNewVoucher(t *testing.T) {
+	_, err := voucher.NewVoucher([]*voucher.DTOVoucher{
+		{
+			CustomerId:    1,
+			TransactionId: 1,
+			CodeVoucher:   "PREMI-20D12M2022Y14H16M17SNEQVM4SCP78M6",
+			NamaVoucher:   "PREMI",
+			StartDate:     time.Now(),
+			EndDate:       time.Now(),
+			UseDate:       time.Now(),
+			Status:        1,
+			NilaiDisc:     15,
+			TypeDisc:      2,
+		},
+		{
+			CustomerId:    1,
+			TransactionId: 1,
+			CodeVoucher:   "PREMI-20D12M2022Y14H16M17SNEQVM4SCP78M6",
+			NamaVoucher:   "PREMI",
+			StartDate:     time.Now(),
+			EndDate:       time.Now(),
+			UseDate:       time.Now(),
+			Status:        1,
+			NilaiDisc:     15,
+			TypeDisc:      2,
+		},
+	})
+
+	assert.Nil(t, err)
+}
+
+func TestNewVoucherSingle(t *testing.T) {
 	voucher, err := voucher.NewVoucherSingle(voucher.DTOVoucher{
 		CustomerId:    1,
 		TransactionId: 1,
@@ -48,24 +79,6 @@ func TestValidationErrorNewVoucherCustomerId(t *testing.T) {
 
 	assert.NotNil(t, err)
 	assert.Equal(t, "CUSTOMER ID NOT SET", err.Error())
-}
-
-func TestValidationErrorNewVoucherTransactionId(t *testing.T) {
-	_, err := voucher.NewVoucherSingle(voucher.DTOVoucher{
-		CustomerId:    1,
-		TransactionId: 0,
-		CodeVoucher:   "PREMI-20D12M2022Y14H16M17SNEQVM4SCP78M6",
-		NamaVoucher:   "PREMI",
-		StartDate:     time.Now(),
-		EndDate:       time.Now(),
-		UseDate:       time.Now(),
-		Status:        1,
-		NilaiDisc:     15,
-		TypeDisc:      2,
-	})
-
-	assert.NotNil(t, err)
-	assert.Equal(t, "TRANSACTION ID NOT SET", err.Error())
 }
 
 func TestValidationErrorNewVoucherCode(t *testing.T) {

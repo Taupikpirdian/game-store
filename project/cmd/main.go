@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"game-store-final-project/project/internal/config/database/mysql"
 	"game-store-final-project/project/internal/delivery/http/customer_handler"
 	"game-store-final-project/project/internal/delivery/http/item_handler"
 	"game-store-final-project/project/internal/delivery/http/transaction_handler"
@@ -18,7 +19,6 @@ import (
 	"game-store-final-project/project/internal/usecase/transaction_detail"
 	"game-store-final-project/project/internal/usecase/voucher"
 	"game-store-final-project/project/internal/usecase/voucher_customer"
-	"game-store-final-project/project/pkg/mysql_connection"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -26,7 +26,7 @@ import (
 
 var (
 	ctx                      = context.Background()
-	mysqlConn                = mysql_connection.InitMysqlDB()
+	mysqlConn                = mysql.InitMysqlDB()
 	repoCustomer             = repo.NewCustomerRepositoryMysqlInteractor(mysqlConn)
 	repoTransaction          = transaction.NewTransactionMysqlInteractor(mysqlConn)
 	repoTransactionDetail    = transaction_detail2.NewTransactionDetailMysqlInteractor(mysqlConn)
@@ -61,8 +61,12 @@ func main() {
 	r.HandleFunc("/get-transaction/customer/{id}", handlerTransaction.GetAllTransactionByCustomerIDHandler).Methods(http.MethodGet)
 	r.HandleFunc("/get-transaction-detail", handlerTransactionDetail.GetAllTransactionDetailHandler).Methods(http.MethodGet)
 	r.HandleFunc("/get-transaction-detail/{id}", handlerTransactionDetail.GetAllTransactionDetailByIDHandler).Methods(http.MethodGet)
+
+	// item
 	r.HandleFunc("/get-item", handlerItem.GetAllItemHandler).Methods(http.MethodGet)
 	r.HandleFunc("/get-item/{id}", handlerItem.GetItemByIDHandler).Methods(http.MethodGet)
+
+	// voucher
 	r.HandleFunc("/get-voucher/{id}", handlerVoucher.GetVoucherCustomerByIdHandler).Methods(http.MethodGet)
 
 	fmt.Println("localhost:8080")
